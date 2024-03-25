@@ -1,0 +1,38 @@
+---
+- name: Ensure Authelia configuration dir exists.
+  ansible.builtin.file:
+      path: "{{ authelia_conf | dirname }}"
+      state: directory
+      mode: 0755
+
+- name: Ensure Authelia data dir exists.
+  ansible.builtin.file:
+      path: "{{ authelia_data_dir }}"
+      state: directory
+      mode: 0750
+
+- name: Debian | Configure Authelia
+  ansible.builtin.template:
+      src: etc/authelia/configuration.yml.j2
+      dest: "{{ authelia_conf }}"
+      mode: 0700
+  register: _authelia_config
+  notify:
+      - Restart Authelia service
+
+- name: Debian | Configure Authelia service
+  ansible.builtin.template:
+      src: lib/systemd/authelia.service.j2
+      dest: "{{ authelia_system_service }}"
+      mode: 0644
+      owner: "root"
+      group: "root"
+  register: _authelia_service_config
+  notify:
+      - Restart Authelia service
+
+- name: Debian | Ensure Authelia is enabled and running
+  ansible.builtin.systemd:
+      service: authelia.service
+      state: started
+      enabled: true

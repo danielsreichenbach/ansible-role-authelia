@@ -1,0 +1,72 @@
+---
+# defaults file for danielsreichenbach.authelia
+authelia_repo_enable: "{{ default_authelia_repo_enable }}"
+authelia_repo_filename: "{{ default_authelia_repo_filename }}"
+authelia_repo_origin: "{{ default_authelia_repo_origin }}"
+authelia_packages: "{{ default_authelia_packages }}"
+authelia_repo_line: "{{ default_authelia_repo_line }}"
+
+authelia_conf: "{{ default_authelia_conf }}"
+authelia_data_dir: "{{ default_authelia_data_dir }}"
+authelia_system_service: "{{ default_authelia_system_service }}"
+
+authelia_group: "{{ default_authelia_group }}"
+authelia_user: "{{ default_authelia_user }}"
+
+authelia_theme: "auto"
+authelia_address: "tcp://127.0.0.1:9091/"
+
+authelia_authentication_backend: "ldap"
+authelia_authentication_backend_password_reset_disable: false
+authelia_authentication_backend_custom_url: "http://127.0.0.1:9091"
+authelia_domain: "localhost"
+authelia_url: "http://127.0.0.1:9091"
+
+authelia_ldap_address: "ldap://127.0.0.1:3890"
+authelia_ldap_implementation: "custom"
+authelia_ldap_base_dn: "dc=example,dc=com"
+authelia_ldap_additional_users_dn: "ou=users"
+authelia_ldap_users_filter: "(&({username_attribute}={input})(objectClass=person))"
+authelia_ldap_additional_groups_dn: "ou=groups"
+authelia_ldap_groups_filter: "(&(member={dn})(objectClass=groupOfNames))"
+authelia_ldap_group_search_mode: "filter"
+authelia_ldap_permit_referrals: false
+authelia_ldap_user: "cn=admin,dc=example,dc=com"
+authelia_ldap_password: "password"
+
+authelia_ldap_attributes_distinguished_name: ""
+authelia_ldap_attributes_username: "uid"
+authelia_ldap_attributes_display_name: "displayName"
+authelia_ldap_attributes_mail: "mail"
+authelia_ldap_attributes_member_of: "memberOf"
+authelia_ldap_attributes_group_name: "cn"
+
+authelia_storage_backend: "postgres"
+authelia_storage_encryption_key: "you_must_generate_a_random_string_of_more_than_twenty_chars_and_configure_this"
+
+authelia_storage_backend_postgres_address: "tcp://127.0.0.1:5432"
+authelia_storage_backend_postgres_database: "authelia"
+authelia_storage_backend_postgres_username: "authelia"
+authelia_storage_backend_postgres_password: "password"
+authelia_storage_backend_postgres_timeout: "5 seconds"
+
+authelia_notifier_backend: "smtp"
+
+authelia_notifier_backend_smtp_address: "smtp://127.0.0.1:25"
+authelia_notifier_backend_smtp_timeout: "5 seconds"
+authelia_notifier_backend_smtp_username: "test"
+authelia_notifier_backend_smtp_password: "password"
+authelia_notifier_backend_smtp_sender: "Authelia <admin@example.com>"
+authelia_notifier_backend_smtp_identifier: "localhost"
+authelia_notifier_backend_smtp_subject: "[Authelia] {title}"
+authelia_notifier_backend_smtp_startup_check_address: "test@authelia.com"
+authelia_notifier_backend_smtp_disable_require_tls: false
+authelia_notifier_backend_smtp_disable_html_emails: false
+
+authelia_reset_jwt_lifespan: "5 minutes"
+authelia_reset_jwt_algorithm: "HS256"
+authelia_reset_jwt_secret: "a_very_important_secret"
+
+authelia_privacy_policy_enabled: false
+authelia_privacy_policy_require_acceptance: false
+authelia_privacy_policy_url: "http://127.0.0.1:9091"

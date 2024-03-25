@@ -1,0 +1,13 @@
+---
+# vars file for danielsreichenbach.authelia
+default_authelia_repo_enable: true
+default_authelia_repo_origin: "apt.authelia.com"
+default_authelia_repo_filename: "authelia-stable-{{ ansible_os_family | lower }}"
+default_authelia_packages:
+    - authelia
+default_authelia_repo_line: "deb https://apt.authelia.com/stable/debian/{{ ansible_os_family | lower }}/ all main"
+
+default_authelia_conf_dir: "/etc/authelia"
+default_authelia_conf: "{{ default_authelia_conf_dir }}/configuration.yml"
+default_authelia_data_dir: "/var/lib/authelia"
+default_authelia_system_service: "/lib/systemd/system/authelia.service"

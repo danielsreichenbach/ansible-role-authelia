@@ -1,0 +1,42 @@
+---
+- name: Debian | Ensure GPG is available
+  ansible.builtin.apt:
+      name: gpg
+      state: present
+
+- name: Debian | Trust the Authelia packaging key
+  when: "authelia_repo_enable | bool"
+  ansible.builtin.copy:
+      src: "authelia-{{ ansible_os_family | lower }}.asc"
+      dest: "/etc/apt/trusted.gpg.d/authelia-{{ ansible_os_family | lower }}.asc"
+      mode: 0644
+  register: _authelia_apt_key
+
+- name: Debian | Add Authelia repository
+  when: "authelia_repo_enable | bool"
+  ansible.builtin.apt_repository:
+      repo: "{{ authelia_repo_line }}"
+      filename: "{{ authelia_repo_filename }}"
+      state: present
+  register: _authelia_apt_repo
+
+- name: Debian | Pin the Authelia repository
+  when: "authelia_repo_enable | bool"
+  ansible.builtin.template:
+      src: apt.pin.j2
+      dest: /etc/apt/preferences.d/authelia
+      owner: root
+      group: root
+      mode: 0644
+  register: _authelia_apt_pin
+
+- name: Debian | Update the package cache
+  when: (_authelia_apt_key.changed or _authelia_apt_pin.changed or _authelia_apt_repo.changed) and authelia_repo_enable
+  ansible.builtin.apt:
+      update_cache: true
+      cache_valid_time: 3600
+
+- name: Debian | Install Authelia server
+  ansible.builtin.package:
+      name: "{{ authelia_packages }}"
+      state: present

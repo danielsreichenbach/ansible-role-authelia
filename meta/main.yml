@@ -1,0 +1,27 @@
+---
+galaxy_info:
+    namespace: danielsreichenbach
+    role_name: authelia
+    author: Daniel S. Reichenbach
+    description: Manages Authelia server installation and configuration.
+    company: Kogito UG
+
+    license: MIT
+
+    min_ansible_version: "2.14"
+
+    platforms:
+        - name: Debian
+          versions:
+              - bookworm
+        - name: Ubuntu
+          versions:
+              - jammy
+
+    galaxy_tags:
+        - sso
+        - authentication
+        - debian
+        - ubuntu
+
+dependencies: []
