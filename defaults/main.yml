@@ -18,9 +18,9 @@ authelia_address: "tcp://127.0.0.1:9091/"
 
 authelia_authentication_backend: "ldap"
 authelia_authentication_backend_password_reset_disable: false
-authelia_authentication_backend_custom_url: "http://127.0.0.1:9091"
-authelia_domain: "localhost"
-authelia_url: "http://127.0.0.1:9091"
+authelia_authentication_backend_custom_url: "https://authelia.example.com"
+authelia_domain: "example.com"
+authelia_url: "https://authelia.example.com"
 
 authelia_ldap_address: "ldap://127.0.0.1:3890"
 authelia_ldap_implementation: "custom"
@@ -57,9 +57,9 @@ authelia_notifier_backend_smtp_timeout: "5 seconds"
 authelia_notifier_backend_smtp_username: "test"
 authelia_notifier_backend_smtp_password: "password"
 authelia_notifier_backend_smtp_sender: "Authelia <admin@example.com>"
-authelia_notifier_backend_smtp_identifier: "localhost"
+authelia_notifier_backend_smtp_identifier: "authelia.example.com"
 authelia_notifier_backend_smtp_subject: "[Authelia] {title}"
-authelia_notifier_backend_smtp_startup_check_address: "test@authelia.com"
+authelia_notifier_backend_smtp_startup_check_address: "test@example.com"
 authelia_notifier_backend_smtp_disable_require_tls: false
 authelia_notifier_backend_smtp_disable_html_emails: false
 
@@ -69,4 +69,92 @@ authelia_reset_jwt_secret: "a_very_important_secret"
 
 authelia_privacy_policy_enabled: false
 authelia_privacy_policy_require_acceptance: false
-authelia_privacy_policy_url: "http://127.0.0.1:9091"
+authelia_privacy_policy_url: "https://authelia.example.com/privacy-policy/"
+
+authelia_access_control_default_policy: "deny"
+
+authelia_access_control_networks:
+    []
+    # - name: "internal"
+    #   networks:
+    #       - "10.10.0.0/16"
+    #       - "172.16.1.0/24"
+    #       - "192.168.2.0/24"
+    # - name: "VPN"
+    #   networks: "10.9.0.0/16"
+
+authelia_access_control_rules:
+    ## Rules applied to everyone
+    - domain: "{{ authelia_domain }}"
+      policy: "bypass"
+
+    ## Domain Regex examples. Generally we recommend just using a standard domain.
+    # - domain_regex: '^(?P<User>\w+)\.example\.com$'
+    #   policy: "one_factor"
+    # - domain_regex: '^(?P<Group>\w+)\.example\.com$'
+    #   policy: "one_factor"
+    # - domain_regex:
+    #       - '^appgroup-.*\.example\.com$'
+    #       - '^appgroup2-.*\.example\.com$'
+    #   policy: "one_factor"
+    # - domain_regex: '^.*\.example\.com$'
+    #   policy: "two_factor"
+
+    # - domain: "secure.example.com"
+    #   policy: "one_factor"
+    #   ## Network based rule, if not provided any network matches.
+    #   networks:
+    #       - "internal"
+    #       - "VPN"
+    #       - "192.168.1.0/24"
+    #       - "10.0.0.1"
+
+    # - domain:
+    #       - "secure.example.com"
+    #       - "private.example.com"
+    #   policy: "two_factor"
+
+    # - domain: "singlefactor.example.com"
+    #   policy: "one_factor"
+
+    ## Rules applied to 'admins' group
+    # - domain: "mx2.mail.example.com"
+    #   subject: "group:admins"
+    #   policy: "deny"
+
+    # - domain: "*.example.com"
+    #   subject:
+    #       - "group:admins"
+    #       - "group:moderators"
+    #   policy: "two_factor"
+
+    ## Rules applied to 'dev' group
+    # - domain: "dev.example.com"
+    #   resources:
+    #       - "^/groups/dev/.*$"
+    #   subject: "group:dev"
+    #   policy: "two_factor"
+
+    ## Rules applied to user 'john'
+    # - domain: "dev.example.com"
+    #   resources:
+    #       - "^/users/john/.*$"
+    #   subject: "user:john"
+    #   policy: "two_factor"
+
+    ## Rules applied to user 'harry'
+    # - domain: "dev.example.com"
+    #   resources:
+    #       - "^/users/harry/.*$"
+    #   subject: "user:harry"
+    #   policy: "two_factor"
+
+    ## Rules applied to user 'bob'
+    # - domain: "*.mail.example.com"
+    #   subject: "user:bob"
+    #   policy: "two_factor"
+    # - domain: "dev.example.com"
+    #   resources:
+    #       - "^/users/bob/.*$"
+    #   subject: "user:bob"
+    #   policy: "two_factor"
